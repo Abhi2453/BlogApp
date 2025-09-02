@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= locals.title %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+    <script type="text/javascript" defer src="/js/script.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <%- include('../partials/search.ejs') %> <%-
+      include('../partials/header.ejs') %>
+      <main class="main"><%- body %></main>
+      <%- include('../partials/footer.ejs') %>
+    </div>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const successMsg = urlParams.get("success");
+      const errorMsg = urlParams.get("error");
+
+      const notyf = new Notyf();
+
+      if (successMsg) {
+        notyf.success(successMsg);
+      }
+
+      if (errorMsg) {
+        notyf.error(errorMsg);
+      }
+
+      if (successMsg || errorMsg) {
+        const newUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+<div class="author">
+  <h1 class="author__heading">Hi, I am Lohit.</h1>
+  <p class="author__body">Web developer and Competative Programmer.</p>
+</div>
+
+<script
+  src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+  type="module"
+></script>
+<div class="lottie-wrapper">
+  <div class="placeholder" id="placeholder">Loading animation...</div>
+  <dotlottie-player
+    src="https://lottie.host/87067bbf-905d-44e6-a544-8ae69166bf0b/cDp6WRjnFH.lottie"
+    background="transparent"
+    style="width: 45%"
+    speed="1"
+    loop
+    autoplay
+  ></dotlottie-player>
+</div>
+
+<script>
+  const player = document.getElementById("lottiePlayer");
+  const placeholder = document.getElementById("placeholder");
+
+  // Hide placeholder when animation is loaded
+  player.addEventListener("load", () => {
+    placeholder.style.display = "none";
+  });
+
+  // Optional: Log loading errors
+  player.addEventListener("error", (e) => {
+    console.error("Lottie failed to load:", e);
+    placeholder.textContent = "Failed to load animation.";
+  });
+
+  // Optional: Lazy load only when in view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        try {
+          // Ensure src is set before loading
+          if (player.src) {
+            player.load();
+          }
+        } catch (err) {
+          console.error("Error loading Lottie:", err);
+        }
+        observer.unobserve(player);
+      }
+    });
+  });
+
+  observer.observe(player);
+</script>
+
+<section class="articles">
+  <h2 class="articles__heading">Latest Posts</h2>
+
+  <ul class="article-ul">
+    <% data.forEach(post=> { %>
+    <li>
+      <a href="/post/<%= post._id %>">
+        <span><%= post.title %></span>
+        <span class="article-list__date"
+          ><%= post.createdAt.toDateString() %></span
+        >
+      </a>
+    </li>
+    <% }) %>
+  </ul>
+  <% if (nextPage !== null) { %>
+  <a href="/?page=<%= nextPage %>" class="pagination">&lt; View Older Posts</a>
+  <% } %>
+</section>
